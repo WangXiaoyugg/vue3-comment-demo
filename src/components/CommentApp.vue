@@ -1,5 +1,5 @@
 <template>
-  <CommentInput></CommentInput>
+  <CommentInput @comment-info="receiveInfo"></CommentInput>
   <CommentList></CommentList>
 </template>
 
@@ -13,7 +13,12 @@ export default {
     CommentList
   },
   setup() {
-    return {};
+    const receiveInfo = info => {
+      console.log(info);
+    };
+    return {
+      receiveInfo
+    };
   }
 };
 </script>

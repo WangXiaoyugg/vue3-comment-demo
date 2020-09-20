@@ -9,27 +9,35 @@
       <textarea v-model.trim="content" class="comment-textarea"></textarea>
     </div>
     <div class="comment-item btn">
-      <button class="comment-btn">发布</button>
+      <button class="comment-btn" @click="onPublish">发布</button>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onUpdated } from "vue";
+import { ref } from "vue";
 
 export default {
   name: "CommentInput",
-  setup() {
+  setup(props, { emit }) {
     const username = ref("");
     const content = ref("");
-
-    onUpdated(() => {
-      console.log(username.value, content.value);
-    });
+    const resetForm = () => {
+      username.value = "";
+      content.value = "";
+    };
+    const onPublish = () => {
+      emit("comment-info", {
+        username: username.value,
+        content: content.value
+      });
+      resetForm();
+    };
 
     return {
       username,
-      content
+      content,
+      onPublish
     };
   }
 };
