@@ -15,13 +15,28 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 
 export default {
   name: "CommentInput",
   setup(props, { emit }) {
     const username = ref("");
     const content = ref("");
+    const loadData = () => {
+      const loadName = sessionStorage.getItem("username");
+      if (loadName) {
+        username.value = loadName;
+      }
+    };
+
+    const saveData = username => {
+      sessionStorage.setItem("username", username);
+    };
+
+    onBeforeMount(() => {
+      loadData();
+    });
+
     const resetForm = () => {
       username.value = "";
       content.value = "";
@@ -31,6 +46,7 @@ export default {
         username: username.value,
         content: content.value
       });
+      saveData(username.value);
       resetForm();
     };
 
