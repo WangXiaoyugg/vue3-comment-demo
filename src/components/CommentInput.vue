@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import { ref, onBeforeMount, watchEffect } from "vue";
+import { ref, watchEffect } from "vue";
+import { useData } from "../lib/useData";
 
 export default {
   name: "CommentInput",
@@ -27,28 +28,14 @@ export default {
   setup(props, { emit }) {
     const username = ref("");
     const content = ref("");
+    const { save } = useData(username, "username");
     watchEffect(() => {
       if (props.replyUser) {
         content.value = "@" + props.replyUser + " ";
       }
     });
-    const loadData = () => {
-      const loadName = sessionStorage.getItem("username");
-      if (loadName) {
-        username.value = loadName;
-      }
-    };
-
-    const saveData = username => {
-      sessionStorage.setItem("username", username);
-    };
-
-    onBeforeMount(() => {
-      loadData();
-    });
 
     const resetForm = () => {
-      username.value = "";
       content.value = "";
     };
     const onPublish = () => {
@@ -56,7 +43,7 @@ export default {
         username: username.value,
         content: content.value
       });
-      saveData(username.value);
+      save(username.value);
       resetForm();
     };
 

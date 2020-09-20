@@ -12,7 +12,8 @@
 <script>
 import CommentInput from "./CommentInput";
 import CommentList from "./CommentList";
-import { ref, onBeforeMount } from "vue";
+import { ref } from "vue";
+import { useData } from "../lib/useData";
 export default {
   name: "CommentApp",
   components: {
@@ -22,30 +23,18 @@ export default {
   setup() {
     const commentList = ref([]);
     const replyUser = ref("");
-    const loadData = () => {
-      const loadComments = sessionStorage.getItem("comments");
-      if (loadComments) {
-        commentList.value = JSON.parse(loadComments);
-      }
-    };
-    onBeforeMount(() => {
-      loadData();
-    });
-
-    const saveData = comments => {
-      sessionStorage.setItem("comments", JSON.stringify(comments));
-    };
+    const { save } = useData(commentList, "comments");
 
     const receiveInfo = info => {
       if (!info.username) return alert("请输入用户名");
       if (!info.content) return alert("请输入评论内容");
 
       commentList.value.push(info);
-      saveData(commentList.value);
+      save(commentList.value);
     };
     const deleteCommentList = index => {
       commentList.value.splice(index, 1);
-      saveData(commentList.value);
+      save(commentList.value);
     };
     const replyCommentList = index => {
       const replied = commentList.value[index];
