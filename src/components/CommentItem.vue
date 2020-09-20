@@ -5,6 +5,9 @@
     <div class="delete" @click="onDelete">
       <Icon name="delete" class="icon"></Icon>
     </div>
+    <div class="reply" @click="onReply">
+      <Icon name="reply" class="icon"></Icon>
+    </div>
   </div>
 </template>
 
@@ -27,14 +30,22 @@ export default {
     index: {
       type: Number,
       required: true
+    },
+    replyFn: {
+      type: Function,
+      required: true
     }
   },
   setup(props) {
     const onDelete = () => {
       props.deleteFn && props.deleteFn(props.index);
     };
+    const onReply = () => {
+      props.replyFn && props.replyFn(props.index);
+    };
     return {
-      onDelete
+      onDelete,
+      onReply
     };
   }
 };
@@ -65,16 +76,23 @@ export default {
     font-style: italic;
   }
 
-  > .delete {
+  > .delete,
+  .reply {
     position: absolute;
     right: 0.5em;
-    top: 0.2em;
     cursor: pointer;
-    display: none;
 
     > .icon {
       color: #00a3cf;
     }
+  }
+  > .delete {
+    top: 0.2em;
+    cursor: pointer;
+    display: none;
+  }
+  > .reply {
+    bottom: 0.5em;
   }
   &:hover {
     .delete {

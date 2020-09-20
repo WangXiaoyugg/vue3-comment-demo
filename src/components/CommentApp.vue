@@ -1,7 +1,11 @@
 <template>
   <div class="comment-app">
-    <CommentInput @comment-info="receiveInfo"></CommentInput>
-    <CommentList :comment-list="commentList" :deleteFn="deleteCommentList"></CommentList>
+    <CommentInput @comment-info="receiveInfo" :replyUser="replyUser"></CommentInput>
+    <CommentList
+      :comment-list="commentList"
+      :deleteFn="deleteCommentList"
+      :replyFn="replyCommentList"
+    ></CommentList>
   </div>
 </template>
 
@@ -17,6 +21,7 @@ export default {
   },
   setup() {
     const commentList = ref([]);
+    const replyUser = ref("");
     const loadData = () => {
       const loadComments = sessionStorage.getItem("comments");
       if (loadComments) {
@@ -42,10 +47,16 @@ export default {
       commentList.value.splice(index, 1);
       saveData(commentList.value);
     };
+    const replyCommentList = index => {
+      const replied = commentList.value[index];
+      replyUser.value = replied.username;
+    };
     return {
       receiveInfo,
       commentList,
-      deleteCommentList
+      deleteCommentList,
+      replyCommentList,
+      replyUser
     };
   }
 };

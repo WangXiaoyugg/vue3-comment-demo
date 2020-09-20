@@ -15,13 +15,23 @@
 </template>
 
 <script>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, watchEffect } from "vue";
 
 export default {
   name: "CommentInput",
+  props: {
+    replyUser: {
+      type: String
+    }
+  },
   setup(props, { emit }) {
     const username = ref("");
     const content = ref("");
+    watchEffect(() => {
+      if (props.replyUser) {
+        content.value = "@" + props.replyUser + " ";
+      }
+    });
     const loadData = () => {
       const loadName = sessionStorage.getItem("username");
       if (loadName) {
