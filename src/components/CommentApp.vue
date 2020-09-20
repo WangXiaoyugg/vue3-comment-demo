@@ -1,7 +1,7 @@
 <template>
   <div class="comment-app">
     <CommentInput @comment-info="receiveInfo"></CommentInput>
-    <CommentList :comment-list="commentList"></CommentList>
+    <CommentList :comment-list="commentList" :deleteFn="deleteCommentList"></CommentList>
   </div>
 </template>
 
@@ -38,9 +38,14 @@ export default {
       commentList.value.push(info);
       saveData(commentList.value);
     };
+    const deleteCommentList = index => {
+      commentList.value.splice(index, 1);
+      saveData(commentList.value);
+    };
     return {
       receiveInfo,
-      commentList
+      commentList,
+      deleteCommentList
     };
   }
 };

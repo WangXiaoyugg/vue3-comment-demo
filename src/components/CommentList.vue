@@ -1,6 +1,6 @@
 <template>
   <div v-for="(comment, index) in commentList" :key="index" class="comment-list">
-    <CommentItem :comment="comment"></CommentItem>
+    <CommentItem :comment="comment" :deleteFn="onDelete" :index="index"></CommentItem>
   </div>
 </template>
 
@@ -12,13 +12,22 @@ export default {
     commentList: {
       type: Array,
       default: () => []
+    },
+    deleteFn: {
+      type: Function,
+      required: true
     }
   },
   components: {
     CommentItem
   },
-  setup() {
-    return {};
+  setup(props) {
+    const onDelete = index => {
+      props.deleteFn && props.deleteFn(index);
+    };
+    return {
+      onDelete
+    };
   }
 };
 </script>
