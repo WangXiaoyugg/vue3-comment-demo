@@ -1,7 +1,6 @@
 <template>
-  <div v-for="(comment, index) in comments" :key="index">
-    <div>{{comment.username}}: {{comment.content}}</div>
-    <CommentItem></CommentItem>
+  <div v-for="(comment, index) in comments" :key="index" class="comment-list">
+    <CommentItem :comment="comment"></CommentItem>
   </div>
 </template>
 
@@ -27,4 +26,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.comment-list {
+  background-color: #fff;
+  min-width: 520px;
+  margin: 10px auto;
+  font-size: 16px;
+}
 </style>
