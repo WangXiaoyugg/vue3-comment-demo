@@ -1,26 +1,24 @@
 <template>
-  <div v-for="(comment, index) in comments" :key="index" class="comment-list">
+  <div v-for="(comment, index) in commentList" :key="index" class="comment-list">
     <CommentItem :comment="comment"></CommentItem>
   </div>
 </template>
 
 <script>
 import CommentItem from "./CommentItem";
-import { ref } from "vue";
 export default {
   name: "CommentList",
+  props: {
+    commentList: {
+      type: Array,
+      default: () => []
+    }
+  },
   components: {
     CommentItem
   },
   setup() {
-    const comments = ref([
-      { username: "张三", content: "今天天气不错" },
-      { username: "李四", content: "天气有点热" },
-      { username: "王五", content: "要一起出去玩吗" }
-    ]);
-    return {
-      comments
-    };
+    return {};
   }
 };
 </script>
