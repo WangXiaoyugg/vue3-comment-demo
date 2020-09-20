@@ -8,7 +8,7 @@
 <script>
 import CommentInput from "./CommentInput";
 import CommentList from "./CommentList";
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 export default {
   name: "CommentApp",
   components: {
@@ -17,8 +17,26 @@ export default {
   },
   setup() {
     const commentList = ref([]);
+    const loadData = () => {
+      const loadComments = sessionStorage.getItem("comments");
+      if (loadComments) {
+        commentList.value = JSON.parse(loadComments);
+      }
+    };
+    onBeforeMount(() => {
+      loadData();
+    });
+
+    const saveData = comments => {
+      sessionStorage.setItem("comments", JSON.stringify(comments));
+    };
+
     const receiveInfo = info => {
+      if (!info.username) return alert("请输入用户名");
+      if (!info.content) return alert("请输入评论内容");
+
       commentList.value.push(info);
+      saveData(commentList.value);
     };
     return {
       receiveInfo,
